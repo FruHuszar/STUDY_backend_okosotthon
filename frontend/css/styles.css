@@ -1,0 +1,468 @@
+/* ==========================================================================
+   Otthon+ Vezérlőközpont — design tokens
+   Paletta:
+     --ink     #12181F  sötét felület / sidebar
+     --paper   #F6F7F4  oldal háttér
+     --surface #FFFFFF  kártya felület
+     --slate   #4B5563  másodlagos szöveg
+     --amber   #E8A33D  energia / fogyasztás akcent
+     --teal    #2F7B7F  klíma / hőmérséklet akcent
+     --signal  #D64545  hiba / riasztás akcent
+     --line    #DDE1E6  szegélyek
+   Tipográfia: Space Grotesk (display), Inter (body), IBM Plex Mono (adat/log/kód)
+   ========================================================================== */
+
+:root {
+  --ink: #12181F;
+  --ink-soft: #1B232D;
+  --paper: #F6F7F4;
+  --surface: #FFFFFF;
+  --slate: #4B5563;
+  --slate-soft: #8891A0;
+  --amber: #E8A33D;
+  --amber-dim: #F6E3C2;
+  --teal: #2F7B7F;
+  --teal-dim: #D9EAEA;
+  --signal: #D64545;
+  --signal-dim: #F6D9D9;
+  --line: #DDE1E6;
+  --ok: #3D8B5F;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+h1, h2, h3, h4, .display-font {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+code, pre, .mono, .data-value, .status-code, .sql-console textarea, .log-table td.ts, .badge-protocol {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ---------- Layout: sidebar + content ---------- */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--ink);
+  color: #DDE3E8;
+  padding: 28px 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.sidebar .brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--amber), var(--teal));
+  flex-shrink: 0;
+}
+
+.sidebar .brand-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.sidebar .brand-sub {
+  font-size: 0.72rem;
+  color: var(--slate-soft);
+  margin-bottom: 26px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sidebar nav a {
+  color: #C4CBD3;
+  text-decoration: none;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 0.89rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar nav a:hover {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+}
+
+.sidebar nav a.active {
+  background: rgba(232,163,61,0.14);
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.sidebar nav .nav-icon {
+  width: 16px;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.sidebar .conn-status {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.78rem;
+  color: var(--slate-soft);
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 34px 42px 60px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.topbar h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.topbar .lede {
+  color: var(--slate);
+  max-width: 640px;
+  font-size: 0.93rem;
+}
+
+/* ---------- Live/status dot (signature element) ---------- */
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.live-dot.on { background: var(--ok); }
+.live-dot.off { background: var(--slate-soft); }
+.live-dot.alert { background: var(--signal); }
+
+.live-dot.on::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ok);
+  animation: pulse-ring 2.2s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.7); opacity: 0.9; }
+  80%  { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot.on::after { animation: none; }
+}
+
+/* ---------- Cards ---------- */
+
+.card-soft {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.room-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  height: 100%;
+}
+
+.room-card .room-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.02rem;
+}
+
+.room-card .room-meta {
+  font-size: 0.78rem;
+  color: var(--slate-soft);
+  margin-bottom: 12px;
+}
+
+.device-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.86rem;
+}
+
+.device-row:first-of-type { border-top: none; }
+
+.device-row .device-name { flex: 1; }
+
+.device-row .device-value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--slate);
+}
+
+.badge-protocol {
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: var(--teal-dim);
+  color: var(--teal);
+  letter-spacing: 0.02em;
+}
+
+.badge-protocol.wifi { background: var(--teal-dim); color: var(--teal); }
+.badge-protocol.zigbee { background: var(--amber-dim); color: #9A6A18; }
+.badge-protocol.mqtt { background: #E6E1F5; color: #5B47A8; }
+
+.stat-tile {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+.stat-tile .stat-label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--slate-soft);
+  margin-bottom: 6px;
+}
+
+.stat-tile .stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.stat-tile .stat-value.amber { color: var(--amber); }
+.stat-tile .stat-value.teal { color: var(--teal); }
+
+/* ---------- HTTP / status code chips ---------- */
+
+.status-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.status-code.s2xx { background: #DEF2E6; color: var(--ok); }
+.status-code.s3xx { background: var(--amber-dim); color: #9A6A18; }
+.status-code.s4xx, .status-code.s5xx { background: var(--signal-dim); color: var(--signal); }
+
+.method-chip {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 5px;
+  color: #fff;
+  letter-spacing: 0.03em;
+}
+
+.method-chip.get { background: #2F7B7F; }
+.method-chip.post { background: #3D8B5F; }
+.method-chip.put, .method-chip.patch { background: #9A6A18; }
+.method-chip.delete { background: var(--signal); }
+
+/* ---------- Tables / logs ---------- */
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.log-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--slate-soft);
+  border-bottom: 1px solid var(--line);
+  padding: 8px 10px;
+}
+
+.log-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.log-table td.ts { color: var(--slate); font-size: 0.8rem; }
+
+/* ---------- SQL console ---------- */
+
+.sql-console textarea {
+  width: 100%;
+  background: var(--ink);
+  color: #E8EDF1;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 18px;
+  font-size: 0.9rem;
+  min-height: 110px;
+  resize: vertical;
+}
+
+.sql-console textarea:focus {
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+}
+
+.sql-console .console-hint {
+  font-size: 0.78rem;
+  color: var(--slate-soft);
+  margin-top: 8px;
+}
+
+.result-placeholder {
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 28px;
+  text-align: center;
+  color: var(--slate-soft);
+  font-size: 0.88rem;
+}
+
+/* ---------- Concept cards (ismerd-meg) ---------- */
+
+.concept-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--teal);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  height: 100%;
+}
+
+.concept-card h4 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.concept-card p {
+  font-size: 0.88rem;
+  color: var(--slate);
+  margin-bottom: 0;
+}
+
+.flow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.flow-step:first-of-type { border-top: none; }
+
+.flow-step .flow-index {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--amber);
+  font-size: 1.1rem;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.flow-step h5 {
+  font-size: 0.94rem;
+  margin-bottom: 3px;
+}
+
+.flow-step p {
+  font-size: 0.86rem;
+  color: var(--slate);
+  margin-bottom: 0;
+}
+
+/* ---------- Misc ---------- */
+
+.section-eyebrow {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--slate-soft);
+  margin-bottom: 6px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 30px 0;
+}
+
+.todo-note {
+  background: var(--amber-dim);
+  border: 1px solid #E8C98A;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  color: #7A5511;
+  margin-top: 14px;
+}
+
+.todo-note strong { color: #5c4009; }
+
+a.link-quiet { color: var(--teal); text-decoration: none; border-bottom: 1px dotted var(--teal); }
+a.link-quiet:hover { color: var(--ink); }
+
+@media (max-width: 860px) {
+  .app-shell { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; }
+  .main { padding: 24px; }
+}

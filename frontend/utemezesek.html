@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ütemezések · Otthon+</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-name">Otthon+</div>
+    </div>
+    <div class="brand-sub">Vezérlőközpont</div>
+
+    <nav>
+      <a href="index.html"><span class="nav-icon">◆</span> Áttekintés</a>
+      <a href="utemezesek.html"><span class="nav-icon">◷</span> Ütemezések</a>
+      <a href="lekerdezesek.html"><span class="nav-icon">▤</span> Lekérdezések</a>
+      <a href="riasztasok.html"><span class="nav-icon">▲</span> Riasztások</a>
+      <a href="ismerd-meg.html"><span class="nav-icon">i</span> Ismerd meg az IoT-ot</a>
+    </nav>
+
+    <div class="conn-status">
+      <span class="live-dot on"></span>
+      4 helyiség, 9 eszköz csatlakozva
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <div class="section-eyebrow">Ütemezések</div>
+        <h1>Eszközök ütemezés-lekérdezése</h1>
+        <p class="lede">
+          Minden eszköz rendszeresen lekérdezi a szervertől a saját
+          ütemezési tervét. Az alábbi gombbal szimuláljuk egy-egy eszköz
+          lekérdezését: első alkalommal a szerver <strong>200 OK</strong>-t ad
+          és elküldi a tervet, minden további lekérdezésnél — ha nem
+          változott semmi — <strong>304 Not Modified</strong>-dal válaszol.
+        </p>
+      </div>
+    </div>
+
+    <div id="schedules-list">
+      <!-- JS tölti fel: js/app.js -> renderSchedules() -->
+    </div>
+
+    <div class="todo-note">
+      <strong>Fontos:</strong> a fenti gomb egyelőre csak kliens-oldali
+      demó, hogy lásd a 200/304 közti vizuális különbséget. Az 5. lépésben
+      ezt lecseréljük egy valódi <code>fetch()</code> hívásra, ami a
+      böngésző Network fülén is meg fog jelenni az <code>ETag</code> /
+      <code>If-None-Match</code> fejlécekkel együtt.
+    </div>
+
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
