@@ -41,9 +41,9 @@
         <h1>Eszközök ütemezés-lekérdezése</h1>
         <p class="lede">
           Minden eszköz rendszeresen lekérdezi a szervertől a saját
-          ütemezési tervét. Az alábbi gombbal szimuláljuk egy-egy eszköz
-          lekérdezését: első alkalommal a szerver <strong>200 OK</strong>-t ad
-          és elküldi a tervet, minden további lekérdezésnél — ha nem
+          ütemezési tervét. Az alábbi gombbal egy-egy eszköz lekérdezését
+          indíthatod el: első alkalommal a szerver <strong>200 OK</strong>-t
+          ad és elküldi a tervet, minden további lekérdezésnél — ha nem
           változott semmi — <strong>304 Not Modified</strong>-dal válaszol.
         </p>
       </div>
@@ -54,17 +54,19 @@
     </div>
 
     <div class="todo-note">
-      <strong>Fontos:</strong> a fenti gomb egyelőre csak kliens-oldali
-      demó, hogy lásd a 200/304 közti vizuális különbséget. Az 5. lépésben
-      ezt lecseréljük egy valódi <code>fetch()</code> hívásra, ami a
-      böngésző Network fülén is meg fog jelenni az <code>ETag</code> /
-      <code>If-None-Match</code> fejlécekkel együtt.
+      <strong>Technikai részlet:</strong> a fenti gomb egy valódi
+      <code>fetch()</code> hívást indít a backend <code>/utemezesek/{id}</code>
+      végpontja felé. A böngésző Network fülén megnézhetők az
+      <code>ETag</code> / <code>If-None-Match</code> fejlécek: az első
+      kattintás <strong>200 OK</strong>-t, minden további (ha nem változott
+      az ütemezés) <strong>304 Not Modified</strong>-ot ad vissza.
     </div>
 
   </main>
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/api.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

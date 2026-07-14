@@ -37,39 +37,37 @@
 
     <div class="topbar">
       <div>
-        <div class="section-eyebrow">Gyakorló konzol</div>
-        <h1>SQL lekérdezések a szenzoradatokon</h1>
+        <div class="section-eyebrow">Fejlesztői eszközök</div>
+        <h1>SQL-konzol a mérési naplón</h1>
         <p class="lede">
-          Egy valódi termékben a felhasználó sosem írna SQL-t egy weblapon —
-          itt viszont pont ez a cél: a <code>measurement_logs</code> tábládon
-          fogsz gyakorolni <code>GROUP BY</code>, <code>HAVING</code>,
-          <code>DISTINCT</code> és aggregáló függvények írásában.
+          Az alábbi táblázat egy minta mérési naplót mutat, a konzolban pedig
+          közvetlenül lekérdezheted ezt az adatsort — <code>SELECT</code>,
+          <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code> és
+          aggregáló függvények (<code>AVG</code>, <code>SUM</code>,
+          <code>COUNT</code>) is használhatók.
         </p>
       </div>
     </div>
 
-    <div class="row g-3 mb-4">
-      <div class="col-md-4">
-        <div class="concept-card">
-          <h4>1. Óránkénti átlaghőmérséklet</h4>
-          <p>Egy adott eszköz mért hőmérsékletének óránkénti átlaga egy
-          napra — <code>AVG()</code> + <code>GROUP BY</code> gyakorlás.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="concept-card">
-          <h4>2. Napi összfogyasztás</h4>
-          <p>Egy helyiség összes eszközének napi fogyasztása kWh-ban —
-          <code>SUM()</code> + join gyakorlás.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="concept-card">
-          <h4>3. TOP 3 fogyasztó + HAVING szűrés</h4>
-          <p>A legtöbbet fogyasztó eszközök, illetve csak azok a helyiségek,
-          ahol az átlagfogyasztás túllép egy küszöböt.</p>
-        </div>
-      </div>
+    <div
+      class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"
+    >
+      <h2 class="h5 mb-0">Minta mérési napló</h2>
+      <span class="text-secondary small">measurement_logs · legutóbbi 20 bejegyzés</span>
+    </div>
+
+    <div class="card-soft mb-4">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>Időbélyeg</th>
+            <th>Eszköz</th>
+            <th>Típus</th>
+            <th>Érték</th>
+          </tr>
+        </thead>
+        <tbody id="mock-measurement-log-body"></tbody>
+      </table>
     </div>
 
     <div class="card-soft sql-console mb-3">
@@ -78,7 +76,7 @@
       </label>
       <textarea id="sql-input" spellcheck="false" placeholder="SELECT ... FROM measurement_logs ...;"></textarea>
       <div class="d-flex justify-content-between align-items-center mt-3">
-        <span class="console-hint">A tábla és mezőnevek a Te adatbázis-terved szerint alakulnak majd ki.</span>
+        <span class="console-hint">Elérhető táblák: measurement_logs (id, device_id, meres_tipusa, ertek, idobelyeg), devices (id, room_id, nev, tipus), rooms (id, nev).</span>
         <button id="sql-run-btn" class="btn btn-sm" style="background: var(--ink); color:#fff;">Futtatás</button>
       </div>
     </div>
@@ -90,15 +88,20 @@
     </div>
 
     <div class="todo-note">
-      <strong>Ami még hátravan:</strong> ez a konzol jelenleg csak a
-      felületet mutatja — a mögötte lévő valódi (csak olvasás jogú, csak
-      gyakorlásra szánt) végpontot a backend elkészülése után kötjük be.
+      <strong>Megjegyzés:</strong> ez a konzol egy önálló, a böngészőben futó
+      minta-adatbázison dolgozik (<code>measurement_logs</code>,
+      <code>devices</code>, <code>rooms</code> táblák) — nincs kapcsolatban
+      az éles Otthon+ backenddel, tehát bátran kísérletezhetsz vele anélkül,
+      hogy valós adatot módosítanál.
     </div>
 
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/alasql@4/dist/alasql.min.js"></script>
 <script src="js/data.js"></script>
+<script src="js/mock-data.js"></script>
+<script src="js/api.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

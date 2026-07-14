@@ -51,10 +51,10 @@
             <div class="section-eyebrow">Kezdőlap</div>
             <h1>Otthonod állapota egy pillantásra</h1>
             <p class="lede">
-              Ez a próba-vezérlőközpont egy induló okosotthon-startup, az
-              <strong>Otthon+</strong> fiktív terméke. Az eszközök rendszeresen
-              jelentik az állapotukat a szervernek — ezt szimuláljuk itt, hogy
-              végig lássuk, hogyan épül fel egy valódi IoT-backend.
+              Az <strong>Otthon+</strong> vezérlőközpontja valós időben
+              mutatja az otthonodban lévő eszközök állapotát. Minden csatlakoztatott
+              eszköz rendszeresen jelenti magát a szervernek, így egy pillantásra
+              látod, mi történik éppen a lakásodban.
             </p>
           </div>
         </div>
@@ -107,18 +107,18 @@
             <tbody id="measurement-log-body"></tbody>
           </table>
           <div class="todo-note">
-            <strong>Következő lépés:</strong> ebből a naplóból fogjuk lekérdezni
-            az óránkénti átlaghőmérsékletet, a napi összfogyasztást és a TOP 3
-            legtöbbet fogyasztó eszközt — ezek a <code>GROUP BY</code> /
-            <code>HAVING</code> gyakorló feladataid lesznek a
+            <strong>Megjegyzés:</strong> a naplózott mérésekből részletes
+            statisztikák — óránkénti átlaghőmérséklet, napi összfogyasztás,
+            csúcsfogyasztó eszközök — is előállíthatók. Nézd meg a
             <a href="lekerdezesek.html" class="link-quiet">Lekérdezések</a>
-            oldalon.
+            oldalt.
           </div>
         </div>
       </main>
     </div>
 
     <script src="js/data.js"></script>
+    <script src="js/api.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
