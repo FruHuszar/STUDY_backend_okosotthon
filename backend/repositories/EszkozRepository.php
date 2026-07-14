@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../models/Lampa.php';
-require_once __DIR__ . '/../models/Termosztat.php';
-require_once __DIR__ . '/../models/Dugalj.php';
+require_once __DIR__ . '/../modells/Lampa.php';
+require_once __DIR__ . '/../modells/Termosztat.php';
+require_once __DIR__ . '/../modells/Dugalj.php';
 
 class EszkozRepository
 {

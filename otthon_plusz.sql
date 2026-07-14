@@ -247,6 +247,8 @@ ALTER TABLE `utemezes`
 ALTER TABLE `utemezes_nap`
   ADD CONSTRAINT `utemezes_nap_ibfk_1` FOREIGN KEY (`utemezes_id`) REFERENCES `utemezes` (`id`),
   ADD CONSTRAINT `utemezes_nap_ibfk_2` FOREIGN KEY (`nap_id`) REFERENCES `nap` (`id`);
+
+  
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -4,16 +4,25 @@
 require_once __DIR__ . '/Eszkoz.php';
 
 class Lampa extends Eszkoz {
-    private int $fenyero;
+    private ?int $fenyero;
 
     // Nem kell az #[Override], sőt tilos mertmert: A PHP a konstruktort nem tekinti „felülírható" metódusnak (hisz eltérő paraméterszámok). Mi itt nem felülírunk, hanem sajátot definiálunk.
-    public function __construct(string $megnevezes, int $eszkoztipusId, bool $allapot = false, ?int $helyisegId = null, ?int $id = null, int $fenyero = 0)
-    {
-        return parent::__construct($megnevezes, $eszkoztipusId, $allapot, $helyisegId, $id);
+    public function __construct(
+        string $megnevezes,
+        int $eszkoztipusId,
+        bool $allapot = false,
+        ?int $fenyero = null,
+        ?string $termekszam = null,
+        ?string $garanciaKezdete = null,
+        ?string $garanciaVege = null,
+        ?int $helyisegId = null,
+        ?int $id = null
+    ) {
+        parent::__construct($megnevezes, $eszkoztipusId, $allapot, $termekszam, $garanciaKezdete, $garanciaVege, $helyisegId, $id);
         $this->fenyero = $fenyero;
     }
 
 
-    public function getFenyero(): int { return $this->fenyero; }
-    public function setFenyero(int $fenyero): void { $this->fenyero = $fenyero; }
+    public function getFenyero(): ?int { return $this->fenyero; }
+    public function setFenyero(?int $fenyero): void { $this->fenyero = $fenyero; }
 }

@@ -1,3 +1,5 @@
+# Repository réteg
+
 ## Tranzakciók (transaction)
 
 **Probléma:** egy eszköz mentése két táblát érint (`eszkoz` + altábla, pl. `lampa`),
@@ -15,11 +17,14 @@ szabálya: **vagy mind sikerül, vagy egyik sem**. Ezt a tulajdonságot **atomis
 - **ROLLBACK** (`rollBack()`) → **hiba volt, dobj el mindent**, mintha el sem kezdtük volna
 
 **Menete:**
+
+```
 beginTransaction()
-INSERT eszkoz
-INSERT lampa
-mindkettő ment → commit()
+    INSERT eszkoz
+    INSERT lampa
+mindkettő ment     → commit()
 bármelyik hibázott → rollBack()
+```
 
 **Kapcsolódó:**
 
@@ -27,15 +32,34 @@ bármelyik hibázott → rollBack()
   amit a második INSERT-nél az altábla `eszkoz_id` mezőjébe kell írni.
 - **Adatintegritás:** a tranzakció óvja meg az adatbázist attól, hogy szabályt
   sértő (nem létező-nek szánt) állapotba kerüljön.
-- OSZTV: a **COMMIT** a sikeres tranzakció lezárása (nem „CLOSE").
+- **Törlési sorrend:** előbb az altábla (`lampa`/`termosztat`/`dugalj`), csak utána az
+  `eszkoz` — mert az idegen kulcs a gyerektábláról mutat a szülőre.
+- **OSZTV:** a **COMMIT** a sikeres tranzakció lezárása (nem „CLOSE").
 
 ## Repository pattern
 
-- **repository = "raktár/tároló"**: kódréteg, ami úgy viselkedik, **mintha
+- **repository = „raktár/tároló"**: kódréteg, ami úgy viselkedik, **mintha
   objektumgyűjtemény lenne** — elkéred tőle az objektumot, ő elhozza.
 - **Elrejti**, hogy a háttérben adatbázis van → objektumokban gondolkodsz, nem SQL-ben.
 - Az összes **SQL kizárólag itt** él (SRP).
+- ⚠️ A git `commit`/`repository` **csak szóegyezés**, más terület — ne keverd.
 
-1. A repository-nak szüksége van erre a kapcsolatra, hogy SQL-t futtasson. Hogyan kapja a kapcsolatot? → kívülről, a konstruktorban. A repository nem hoz létre magának new Database()-t. Kap egy kész PDO-kapcsolatot a konstruktorán keresztül — ez a dependency injection. Miért jobb ez? Három okból: (a) mindenki ugyanazt az egy kapcsolatot használja, nem nyit mindenki sajátot; (b) a repository nem tudja és nem is érdekli, hogyan épül a kapcsolat (SRP); (c) tesztelésnél beadhatsz helyette egy ál-kapcsolatot (mock) — ez a 7. lépésed, és pont ez tette a próbatesztet nehézzé.
-2. Ha a repository egy eszközt keres id alapján, és az id a felhasználótól jön (pl. /eszkozok/5), hogyan tennéd bele biztonságosan az SQL-be? → prepared statement helyőrzővel. Az id-t soha nem írjuk bele az SQL szövegébe ("WHERE id = $id" ← ez a támadható forma). Helyette egy helyőrzőt teszünk (WHERE id = :id), és az értéket külön adjuk át. Az adatbázis a helyőrző értékét mindig sima adatként kezeli, sosem futtatható parancsként — így nem lehet SQL-injectiont csinálni. Ezt már beállítottuk: EMULATE_PREPARES => false.
-3. Amikor egy eszközt kiolvasol, az adata két táblában van: a közös rész az eszkoz táblában, a típusfüggő rész (fényerő / hőmérséklet / fogyasztás) a lampa/termosztat/dugalj táblában. A repository visszakap egy sort, benne pl. eszkoztipus_id = 1. Honnan fogja tudni, hogy melyik model-osztályt (Lampa? Termosztat? Dugalj?) kell létrehoznia az adatból? → egy „megkülönböztető" mezőből. Az eszkoztipus táblában ott a típus neve. Ha a lekérdezés visszaadja ezt (pl. "lampa"), a repository egy elágazással eldönti: "lampa" → Lampa, "termosztat" → Termosztat, "dugalj" → Dugalj. Ezt a mintát factory-nak (gyártó) hívják — a KKK is említi „Factory Method"-ként. Egy külön kis metódus a nyers sorból legyártja a helyes típusú objektumot.
+## Három fő kérdés
+
+**1. Hogyan kapja a kapcsolatot? → kívülről, a konstruktorban (dependency injection).**
+A repository nem hoz létre magának `new Database()`-t, hanem kész PDO-kapcsolatot kap a
+konstruktorán át. Miért jobb: (a) mindenki **ugyanazt az egy** kapcsolatot használja;
+(b) a repository-t nem érdekli, **hogyan** épül a kapcsolat (SRP); (c) tesztelésnél
+beadható helyette egy **ál-kapcsolat (mock)**.
+
+**2. Hogyan tesszük be biztonságosan a felhasználói `id`-t? → prepared statement helyőrzővel.**
+Az `id`-t **soha** nem írjuk az SQL szövegébe (`"WHERE id = $id"` ← támadható). Helyette
+helyőrző (`WHERE id = :id`), és az értéket külön adjuk át. Az adatbázis a helyőrző értékét
+mindig sima adatként kezeli, sosem futtatható parancsként → nincs SQL-injection.
+(Beállítva: `EMULATE_PREPARES => false`.)
+
+**3. Honnan tudja, melyik osztályt gyártsa? → egy „megkülönböztető" mezőből (factory).**
+Az adat két táblában van: a közös rész az `eszkoz`-ben, a típusfüggő rész a
+`lampa`/`termosztat`/`dugalj`-ban. Az `eszkoztipus` tábla adja a típus nevét; ez alapján a
+repository egy elágazással dönt: `"lampa"` → `Lampa`, `"termosztat"` → `Termosztat`,
+`"dugalj"` → `Dugalj`. Ezt **Factory Method**-nak hívják (a KKK is említi).
